@@ -9,6 +9,23 @@ function generateAll(numbersInGame, numbersPerRow, numbersToGuarantee) {
 
 }
 
+function generateCombinations (startNumber, endNumber, totalNumbersToBePicked, generateCombinationsFunctionCallback = () => {}) {
+    let generateCombinations =  (currentIndex, startNumber, endNumber, totalNumbersToBePicked, arrayOfNumbersPicked) => {
+        
+        if( totalNumbersToBePicked === 0 ) {
+            return;
+        }
+        for(let i = startNumber; i <= endNumber; i++) {
+            arrayOfNumbersPicked[currentIndex - totalNumbersToBePicked] = i;
+            generateCombinations(currentIndex, i + 1, endNumber, totalNumbersToBePicked - 1, arrayOfNumbersPicked);
+            if(totalNumbersToBePicked == 1) {
+                generateCombinationsFunctionCallback();
+            }
+        }
+    }
+    generateCombinations(totalNumbersToBePicked, startNumber, endNumber, totalNumbersToBePicked, []);
+}
+
 function pickRandomNumbers(arrayOfNumbersToPick, numbersToPick) {
     //pick the random numbers from an array
     //make sure that they are all different
@@ -31,6 +48,7 @@ function generateArray(startNumber, endNumber) {
     for(let i = startNumber; i <= endNumber; i++) {
         numbersArray.push(i);
     }
-
     return numbersArray;
 }
+
+generateCombinations (1, 49, 3);
